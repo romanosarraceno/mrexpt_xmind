@@ -2,8 +2,9 @@ import sys
 import os
 import re
 import subprocess
-import md2xmind
-from xmindparser import xmind_to_dict
+import zipfile
+import xml.etree.ElementTree as ET
+from io import BytesIO
 
 class mrexpt_xmind:
 
@@ -81,7 +82,7 @@ class mrexpt_xmind:
         for idx in indices_encontrados:
             # Mostrar la línea encontrada y las 2 anteriores para contexto
             inicio = max(0, idx - 2)
-            print(f"\n📌 Opción {idx}:")
+            print(f"\n Opción {idx}:")
             for j in range(inicio, idx + 1):
                 if j == idx:
                     print(f"   🔴 Línea {j}: {lineas[j].strip()}  <--- ¡AQUÍ!")
@@ -198,37 +199,6 @@ class mrexpt_xmind:
 
         return texto
 
-    def generar_xmind(self, archivo_md, tema="Profesional"):
-        """Genera un archivo XMind desde el Markdown usando md2xmind."""
-        #TODO conversión a xmind más elaborada
-        try:
-            archivo_salida = archivo_md.replace('.md', '.xmind')
-            print(f"\nGenerando XMind con tema '{tema}'...")
-
-            # md2xmind no soporta temas directamente, pero podemos intentar con el SDK
-            try:
-                print("Usando xmindparser para generar el XMind...")
-                # Aquí iría la lógica con xmindparser si la prefieres
-            except ImportError:
-                pass
-
-            # Usar md2xmind directamente
-            md2xmind.start_trans_file(archivo_md, archivo_salida, tema)
-            print(f"XMind generado: {archivo_salida}")
-
-            # Intentar abrir el archivo
-            try:
-                if os.name == 'nt':  # Windows
-                    os.startfile(archivo_salida)
-                else:  # Mac/Linux
-                    subprocess.run(['open', archivo_salida], check=False)
-            except:
-                print("No se pudo abrir automáticamente el archivo.")
-
-        except ImportError:
-            print("md2xmind no está instalado. Instálalo con: pip install md2xmind")
-            print("No se pudo generar el XMind.")
-
     def execute(self, input_mrexpt, output_md, tema=None):
         print(f"Procesando {input_mrexpt}.mrexpt...")
 
@@ -245,9 +215,6 @@ class mrexpt_xmind:
         # Paso 3: Corregir errores '1.' en consola
         print("\nIniciando corrección de errores '1.'...")
         self.corregir_errores_consola(output_md + ".md")
-
-        # Paso 4: Generar XMind
-        self.generar_xmind(output_md + ".md")
 
         print("\nProceso completado!")
 
