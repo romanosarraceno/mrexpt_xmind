@@ -59,6 +59,7 @@ class mrexpt_xmind:
         """Filtra el markdown eliminando todo lo anterior al tema especificado.
         Muestra todas las líneas donde aparece el tema y permite elegir desde cuál cortar."""
 
+        tema = 'Tema ' + tema
         # Leer el archivo
         with open(archivo_markdown, "r", encoding="utf-8") as f:
             lineas = f.readlines()
@@ -224,4 +225,4 @@ if __name__ == "__main__":
     tema = sys.argv[2] if len(sys.argv) > 2 else None
 
     a = mrexpt_xmind()
-    a.execute(asignatura, asignatura + " T10", tema)
+    a.execute(asignatura, asignatura + " T" + tema, tema)

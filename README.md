@@ -102,7 +102,7 @@ python mrexpt_xmind.py HIE
 ### Ejemplo 2: Con filtro de tema
 
 ``` bash
-python mrexpt_xmind.py HIE "Tema 10"
+python mrexpt_xmind.py HIE "10"
 ```
 
 **Resultado:** Elimina todo el contenido anterior a "Tema 10" y genera un Markdown limpio.
